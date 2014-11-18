@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="blockchainModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="blockchainModelStoreContainer">
+          <EntitySet Name="blocks" EntityType="blockchainModel.Store.blocks" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Inputs" EntityType="blockchainModel.Store.Inputs" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Outputs" EntityType="blockchainModel.Store.Outputs" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Transactions" EntityType="blockchainModel.Store.Transactions" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Inputs_Inputs" Association="blockchainModel.Store.FK_Inputs_Inputs">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="Inputs" EntitySet="Inputs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Outputs_Transactions" Association="blockchainModel.Store.FK_Outputs_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="Outputs" EntitySet="Outputs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_blocks" Association="blockchainModel.Store.FK_Transactions_blocks">
+            <End Role="blocks" EntitySet="blocks" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="blocks">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Length" Type="int" Nullable="false" />
+          <Property Name="LockTime" Type="bigint" Nullable="false" />
+          <Property Name="Nonce" Type="bigint" Nullable="false" />
+          <Property Name="PreviousBlockHash" Type="binary" Nullable="false" MaxLength="32" />
+          <Property Name="TargetDifficulty" Type="bigint" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="MerkleRoot" Type="binary" Nullable="false" MaxLength="32" />
+        </EntityType>
+        <EntityType Name="Inputs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TransactionID" Type="bigint" Nullable="false" />
+          <Property Name="TransactionHash" Type="binary" Nullable="false" MaxLength="32" />
+          <Property Name="TransactionIndex" Type="bigint" Nullable="false" />
+          <Property Name="Script" Type="varbinary(max)" Nullable="false" />
+          <Property Name="SequenceNumber" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Outputs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TransactionID" Type="bigint" Nullable="false" />
+          <Property Name="Value" Type="bigint" Nullable="false" />
+          <Property Name="Script" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Transactions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BlockID" Type="bigint" Nullable="false" />
+          <Property Name="Version" Type="bigint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Inputs_Inputs">
+          <End Role="Transactions" Type="blockchainModel.Store.Transactions" Multiplicity="1" />
+          <End Role="Inputs" Type="blockchainModel.Store.Inputs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Inputs">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Outputs_Transactions">
+          <End Role="Transactions" Type="blockchainModel.Store.Transactions" Multiplicity="1" />
+          <End Role="Outputs" Type="blockchainModel.Store.Outputs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Outputs">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_blocks">
+          <End Role="blocks" Type="blockchainModel.Store.blocks" Multiplicity="1" />
+          <End Role="Transactions" Type="blockchainModel.Store.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="blocks">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="BlockID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="blockchainModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="blockchainEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="blocks" EntityType="blockchainModel.blocks" />
+          <EntitySet Name="Inputs" EntityType="blockchainModel.Inputs" />
+          <EntitySet Name="Outputs" EntityType="blockchainModel.Outputs" />
+          <EntitySet Name="Transactions" EntityType="blockchainModel.Transactions" />
+          <AssociationSet Name="FK_Transactions_blocks" Association="blockchainModel.FK_Transactions_blocks">
+            <End Role="blocks" EntitySet="blocks" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inputs_Inputs" Association="blockchainModel.FK_Inputs_Inputs">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="Inputs" EntitySet="Inputs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Outputs_Transactions" Association="blockchainModel.FK_Outputs_Transactions">
+            <End Role="Transactions" EntitySet="Transactions" />
+            <End Role="Outputs" EntitySet="Outputs" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="blocks">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" p1:StoreGeneratedPattern="None" />
+          <Property Name="Length" Type="Int32" Nullable="false" />
+          <Property Name="LockTime" Type="Int64" Nullable="false" />
+          <Property Name="Nonce" Type="Int64" Nullable="false" />
+          <Property Name="PreviousBlockHash" Type="Binary" Nullable="false" MaxLength="32" FixedLength="true" />
+          <Property Name="TargetDifficulty" Type="Int64" Nullable="false" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MerkleRoot" Type="Binary" Nullable="false" MaxLength="32" FixedLength="true" />
+          <NavigationProperty Name="Transactions" Relationship="blockchainModel.FK_Transactions_blocks" FromRole="blocks" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="Inputs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="TransactionID" Type="Int64" Nullable="false" />
+          <Property Name="TransactionHash" Type="Binary" Nullable="false" MaxLength="32" FixedLength="true" />
+          <Property Name="TransactionIndex" Type="Int64" Nullable="false" />
+          <Property Name="Script" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="SequenceNumber" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Transactions" Relationship="blockchainModel.FK_Inputs_Inputs" FromRole="Inputs" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="Outputs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="TransactionID" Type="Int64" Nullable="false" />
+          <Property Name="Value" Type="Int64" Nullable="false" />
+          <Property Name="Script" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Transactions" Relationship="blockchainModel.FK_Outputs_Transactions" FromRole="Outputs" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="Transactions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="BlockID" Type="Int64" Nullable="false" />
+          <Property Name="Version" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="blocks" Relationship="blockchainModel.FK_Transactions_blocks" FromRole="Transactions" ToRole="blocks" />
+          <NavigationProperty Name="Inputs" Relationship="blockchainModel.FK_Inputs_Inputs" FromRole="Transactions" ToRole="Inputs" />
+          <NavigationProperty Name="Outputs" Relationship="blockchainModel.FK_Outputs_Transactions" FromRole="Transactions" ToRole="Outputs" />
+        </EntityType>
+        <Association Name="FK_Transactions_blocks">
+          <End Role="blocks" Type="blockchainModel.blocks" Multiplicity="1" />
+          <End Role="Transactions" Type="blockchainModel.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="blocks">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="BlockID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inputs_Inputs">
+          <End Role="Transactions" Type="blockchainModel.Transactions" Multiplicity="1" />
+          <End Role="Inputs" Type="blockchainModel.Inputs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Inputs">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Outputs_Transactions">
+          <End Role="Transactions" Type="blockchainModel.Transactions" Multiplicity="1" />
+          <End Role="Outputs" Type="blockchainModel.Outputs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transactions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Outputs">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="blockchainModelStoreContainer" CdmEntityContainer="blockchainEntities">
+    <EntitySetMapping Name="blocks">
+      <EntityTypeMapping TypeName="IsTypeOf(blockchainModel.blocks)">
+        <MappingFragment StoreEntitySet="blocks">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Length" ColumnName="Length" />
+          <ScalarProperty Name="LockTime" ColumnName="LockTime" />
+          <ScalarProperty Name="Nonce" ColumnName="Nonce" />
+          <ScalarProperty Name="PreviousBlockHash" ColumnName="PreviousBlockHash" />
+          <ScalarProperty Name="TargetDifficulty" ColumnName="TargetDifficulty" />
+          <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+          <ScalarProperty Name="MerkleRoot" ColumnName="MerkleRoot" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Inputs">
+      <EntityTypeMapping TypeName="IsTypeOf(blockchainModel.Inputs)">
+        <MappingFragment StoreEntitySet="Inputs">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+          <ScalarProperty Name="TransactionHash" ColumnName="TransactionHash" />
+          <ScalarProperty Name="TransactionIndex" ColumnName="TransactionIndex" />
+          <ScalarProperty Name="Script" ColumnName="Script" />
+          <ScalarProperty Name="SequenceNumber" ColumnName="SequenceNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Outputs">
+      <EntityTypeMapping TypeName="IsTypeOf(blockchainModel.Outputs)">
+        <MappingFragment StoreEntitySet="Outputs">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Script" ColumnName="Script" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Transactions">
+      <EntityTypeMapping TypeName="IsTypeOf(blockchainModel.Transactions)">
+        <MappingFragment StoreEntitySet="Transactions">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="BlockID" ColumnName="BlockID" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
