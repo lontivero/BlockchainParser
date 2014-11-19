@@ -68,6 +68,7 @@ You are welcome to contribute code. You can send code both as a patch or a GitHu
 
 Build Status
 ------------
+[![Build status](https://ci.appveyor.com/api/projects/status/b9hk21kpa6xtk1ey?svg=true)](https://ci.appveyor.com/project/lontivero/blockchainparser)
 
 ### Version 0.0.1
 * Initial version
