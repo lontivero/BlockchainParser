@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Transactions;
-using EntityFramework.BulkInsert.Extensions;
 using Temosoft.Bitcoin.Blockchain;
-using Transaction = Temosoft.Bitcoin.Blockchain.Transaction;
 
 namespace BlockchainToSql
 {
@@ -21,7 +16,7 @@ namespace BlockchainToSql
         }
     }
 
-    internal class BlockchainProcessor : Parser
+    internal class BlockchainProcessor : BlockchainParser
     {
         private static DateTime First1970 = new DateTime(1970, 1, 1);
         private readonly List<blocks> _blocks = new List<blocks>();

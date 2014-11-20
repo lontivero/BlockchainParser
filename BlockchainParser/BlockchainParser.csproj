@@ -36,13 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayHelpers.cs" />
@@ -51,7 +45,7 @@
     <Compile Include="Parts\Block.cs" />
     <Compile Include="Parts\Input.cs" />
     <Compile Include="Parts\Output.cs" />
-    <Compile Include="Parser.cs" />
+    <Compile Include="BlockchainParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parts\Transaction.cs" />
   </ItemGroup>

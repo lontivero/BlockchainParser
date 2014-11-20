@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 
 namespace Temosoft.Bitcoin.Blockchain
 {
-    public abstract class Parser
+    public abstract class BlockchainParser
     {
         public void Parse(string[] filesPath)
         {
@@ -17,7 +16,6 @@ namespace Temosoft.Bitcoin.Blockchain
 
         private void ParseFile(string filePath)
         {
-            Console.WriteLine("Processing {0}", Path.GetFileName(filePath));
             using (var mmf = MemoryMappedFile.CreateFromFile(filePath, FileMode.Open, "Blockchain", 0, MemoryMappedFileAccess.Read))
             {
                 using (var stream = mmf.CreateViewStream(0, 0, MemoryMappedFileAccess.Read))
