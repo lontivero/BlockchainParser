@@ -20,11 +20,7 @@ namespace BlockchainToSql
     {
         private static DateTime First1970 = new DateTime(1970, 1, 1);
         private readonly List<blocks> _blocks = new List<blocks>();
-        private long _blockId = 0;
-        private long _txId = 0;
-        private long _inId = 0;
-        private long _outId = 0;
-        private long _records = 0;
+        private long _records;
 
         private DateTime _begin = DateTime.UtcNow;
 
@@ -44,7 +40,6 @@ namespace BlockchainToSql
 
                     var d = DateTime.UtcNow;
                     dbContext.SaveChanges();
-                    dbContext.Dispose();
                     Console.Write("{0,8:F0} milliseconds  ->", (DateTime.UtcNow - d).TotalMilliseconds );
 
                     _blocks.Clear();
@@ -62,8 +57,8 @@ namespace BlockchainToSql
                     MerkleRoot = block.MerkleRoot,
                     Nonce = block.Nonce,
                     PreviousBlockHash = block.PreviousBlockHash,
-                    TargetDifficulty = block.TimeStamp,
-                    TimeStamp = First1970.AddSeconds(block.TimeStamp)
+                    //TargetDifficulty = block.TimeStamp,
+                    TimeStamp = block.TimeStamp
                 };
                 _records++;
 

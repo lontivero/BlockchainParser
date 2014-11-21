@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Temosoft.Bitcoin.Blockchain
 {
-    public static class BinaryreaderExtensions
+    public static class BinaryReaderExtensions
     {
         public static long ReadVarInt(this BinaryReader reader)
         {
@@ -26,18 +26,6 @@ namespace Temosoft.Bitcoin.Blockchain
         {
             return reader.ReadBytes(32);
         }
-        
-        public static byte PeekByte(this BinaryReader reader)
-        {
-            var stream = reader.BaseStream;
-            if (stream.Length == stream.Position)
-                return 0xff;
-
-            long origPos = stream.Position; 
-            var b = reader.ReadByte();
-            stream.Position = origPos; 
-            return b;
-        }            
     }
 
     public static class HashExtensions
